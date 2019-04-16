@@ -77,19 +77,22 @@ class DynamicForm extends React.Component {
                 }
             ]
         };
-        const example = {
+
+        const headCircumferenceReferenceProps = {
+            id: "head-circumference",
+            observationName: "Head Circumference",
             dataElements: [
                 {
-                    displayName: "purpose of loan",
-                    id: "testFieldName",
+                    id: "name",
+                    displayName: "Name",
                     type: "textInput",
+                    display: true,
                     isRequired: true
                 },
                 {
-                    displayName: "select your gender",
-                    id: "Gender",
+                    id: "gender",
+                    displayName: "Gender",
                     type: "select",
-                    isRequired: true,
                     options: [
                         {
                             id: 1,
@@ -103,12 +106,14 @@ class DynamicForm extends React.Component {
                             isDefault: false,
                             sortOrder: 2
                         }
-                    ]
+                    ],
+                    display: true,
+                    isRequired: false
                 },
                 {
-                    id: "weight",
-                    displayName: "Weight",
-                    unitOfMeasure: "kg",
+                    id: "head-circumference",
+                    displayName: "Head Circumference",
+                    unitOfMeasure: "cm",
                     type: "numberInput",
                     bounds: {
                         upperLimit: 1000
@@ -118,7 +123,8 @@ class DynamicForm extends React.Component {
                 }
             ]
         };
-        this.state = bmiReferenceProps;
+
+        this.state = headCircumferenceReferenceProps; //Choose the sample set you would like to use
         this.state = {
             dataElements: this.state.dataElements
         };
@@ -168,8 +174,11 @@ class DynamicForm extends React.Component {
                     } else {
                         if (form.type === "textInput") {
                             var pattern;
+                            var errorMessage;
                             if (form.id === "name") {
                                 pattern = "(\\w.+\\s).+";
+                                errorMessage =
+                                    "Please type in your first and last name, your first name must be at least two letters long.";
                             }
                             return (
                                 <InputTextField
@@ -180,6 +189,7 @@ class DynamicForm extends React.Component {
                                     _handleChange={this._handleChange}
                                     unitOfMeasure={form.unitOfMeasure}
                                     pattern={pattern}
+                                    errorMessage={errorMessage}
                                 />
                             );
                         }
