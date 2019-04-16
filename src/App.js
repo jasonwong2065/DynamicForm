@@ -119,8 +119,12 @@ class DynamicForm extends React.Component {
             ]
         };
         this.state = bmiReferenceProps;
+        this.state = {
+            dataElements: this.state.dataElements
+        };
         this.submitForm = event => {
             const { dataElements, ...inputFields } = this.state;
+
             console.log(inputFields);
             event.preventDefault();
         };
@@ -130,10 +134,12 @@ class DynamicForm extends React.Component {
                 ...this.state,
                 [event.currentTarget.id]: event.currentTarget.value
             };
-            this.setState({
-                age: document.getElementByClassNames("bmi").value
-            });
-            console.log(this.state);
+        };
+
+        this.updateBMI = event => {
+            this.state = {
+                ...this.state
+            };
         };
     }
 
@@ -152,7 +158,7 @@ class DynamicForm extends React.Component {
                                     this.state.weight
                                     //Math.pow(this.state.height / 100, 2)
                                 }
-                                onChange={form._handleChange}
+                                _handleChange={this.updateBMI}
                                 //value={
                                 //     this.state.weight /
                                 //     Math.pow(this.state.height / 100, 2)
@@ -161,6 +167,10 @@ class DynamicForm extends React.Component {
                         );
                     } else {
                         if (form.type === "textInput") {
+                            var pattern;
+                            if (form.id === "name") {
+                                pattern = "(\\w.+\\s).+";
+                            }
                             return (
                                 <InputTextField
                                     id={form.id}
@@ -169,6 +179,7 @@ class DynamicForm extends React.Component {
                                     key={form.displayName}
                                     _handleChange={this._handleChange}
                                     unitOfMeasure={form.unitOfMeasure}
+                                    pattern={pattern}
                                 />
                             );
                         }
